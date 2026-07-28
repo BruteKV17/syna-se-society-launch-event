@@ -108,7 +108,7 @@ export const Section10LaunchEvent: React.FC = () => {
               </div>
               <h3 className="font-display text-2xl font-bold text-white">Experience The Bridge of Knowledge</h3>
               <p className="font-sans text-xs sm:text-sm text-gray-300 mt-2">
-                Main Auditorium, Chandigarh University • August 5, 2026 @ 5:00 PM
+                Main Auditorium, Chandigarh University • Tentative Date: August 5, 2026 @ 5:00 PM
               </p>
             </div>
             <button
