@@ -1,0 +1,155 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-dark: #07050E;
+    --color-violet: #A855F7;
+    --color-purple: #7C3AED;
+    --color-magenta: #E086FF;
+  }
+
+  html, body, #root {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  body {
+    background-color: var(--bg-dark);
+    color: #F3F4F6;
+    overflow-x: hidden;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #07050E;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(168, 85, 247, 0.3);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(168, 85, 247, 0.6);
+  }
+}
+
+/* Glassmorphism & Cyber Card Utilities */
+.glass-card {
+  background: rgba(14, 9, 27, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(168, 85, 247, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-card-hover {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card-hover:hover {
+  border-color: rgba(168, 85, 247, 0.4);
+  box-shadow: 0 0 35px rgba(168, 85, 247, 0.25);
+  transform: translateY(-4px);
+}
+
+.neon-text-glow {
+  text-shadow: 0 0 15px rgba(168, 85, 247, 0.6), 0 0 30px rgba(124, 58, 237, 0.4);
+}
+
+.neon-border-glow {
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.3), inset 0 0 15px rgba(168, 85, 247, 0.15);
+}
+
+/* Section Container (Free Smooth Scroll) */
+.full-section {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .full-section {
+    padding: 2rem 0.75rem;
+    min-height: calc(100vh - 2rem);
+  }
+}
+
+/* Circuit trace animated background helper */
+.circuit-bg-pattern {
+  background-image: radial-gradient(rgba(168, 85, 247, 0.15) 1px, transparent 0);
+  background-size: 32px 32px;
+}
+
+/* Holographic 3D Card Reflection */
+.holo-card {
+  position: relative;
+  background: linear-gradient(135deg, rgba(30, 15, 55, 0.8) 0%, rgba(10, 5, 20, 0.95) 100%);
+  border: 1px solid rgba(224, 134, 255, 0.3);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 30px rgba(168, 85, 247, 0.2);
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+.holo-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: inherit;
+  background: linear-gradient(115deg, transparent 20%, rgba(255, 255, 255, 0.12) 40%, rgba(224, 134, 255, 0.25) 50%, rgba(56, 189, 248, 0.25) 60%, transparent 80%);
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* Glowing Button */
+.btn-synapse {
+  background: linear-gradient(135deg, #A855F7 0%, #7C3AED 100%);
+  color: white;
+  font-weight: 600;
+  border-radius: 9999px;
+  padding: 0.75rem 2rem;
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+  transition: all 0.3s ease;
+}
+
+.btn-synapse:hover {
+  box-shadow: 0 0 35px rgba(168, 85, 247, 0.7), 0 0 50px rgba(124, 58, 237, 0.5);
+  transform: translateY(-2px) scale(1.02);
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Continuous Left-to-Right Moving Marquee Carousel */
+@keyframes marquee-left-to-right {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.animate-marquee-right {
+  display: flex;
+  width: max-content;
+  animation: marquee-left-to-right 30s linear infinite;
+}
+
+.animate-marquee-right:hover {
+  animation-play-state: paused;
+}

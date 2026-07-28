@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mission 01 — Prompt Engineering Challenge | The Synapse Society</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/animations.css">
+  <link rel="stylesheet" href="../assets/css/missions.css">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { background: #090909; overflow-x: hidden; font-family: 'Inter', sans-serif; color: #fff; }
+
+    /* Top Navigation Bar */
+    .mission-header-bar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 2.5rem;
+      background: rgba(9, 9, 9, 0.85); backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .mh-back {
+      display: flex; align-items: center; gap: 8px;
+      color: var(--text-sub); text-decoration: none;
+      font-family: 'Fira Code', monospace; font-size: 0.82rem;
+      transition: all 0.3s ease;
+    }
+    .mh-back:hover { color: #fff; transform: translateX(-3px); }
+    .mh-brand {
+      font-family: 'Space Grotesk', sans-serif; font-size: 0.95rem; font-weight: 700;
+      color: #fff; letter-spacing: 0.1em;
+    }
+    .mh-badge {
+      font-family: 'Fira Code', monospace; font-size: 0.75rem;
+      color: var(--neon-purple); background: rgba(138,43,226,0.12);
+      border: 1px solid rgba(138,43,226,0.3); padding: 4px 10px; border-radius: 20px;
+    }
+
+    /* Cinematic Opening Section */
+    #stage-1 {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: #000; z-index: 50; transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1s ease;
+    }
+    #stage-1.fade-up {
+      transform: translateY(-100%); opacity: 0; pointer-events: none;
+    }
+    .opening-logo-container {
+      position: relative; width: 140px; height: 140px; margin-bottom: 1.8rem;
+    }
+    .opening-logo-img {
+      width: 100%; height: 100%; border-radius: 28px; object-fit: contain;
+      box-shadow: 0 0 50px rgba(138, 43, 226, 0.8), 0 0 100px rgba(138, 43, 226, 0.4);
+      opacity: 0; transform: scale(0.85); animation: logoFadeZoom 3s ease-out forwards;
+    }
+    @keyframes logoFadeZoom {
+      0% { opacity: 0; transform: scale(0.85); filter: blur(10px); }
+      50% { opacity: 1; transform: scale(1.05); filter: blur(0px); }
+      100% { opacity: 1; transform: scale(1); filter: blur(0px); }
+    }
+
+    /* Glitch Overlay Effect */
+    .glitch-overlay {
+      position: fixed; inset: 0; z-index: 999; pointer-events: none; opacity: 0;
+      background: rgba(138, 43, 226, 0.2);
+    }
+    .glitch-overlay.active {
+      animation: glitchFlash 0.4s ease forwards;
+    }
+    @keyframes glitchFlash {
+      0% { opacity: 0; transform: skewX(0deg); }
+      20% { opacity: 0.9; transform: skewX(10deg); background: rgba(0, 243, 255, 0.25); }
+      40% { opacity: 0.2; transform: skewX(-10deg); }
+      60% { opacity: 0.8; transform: skewX(5deg); background: rgba(138, 43, 226, 0.3); }
+      100% { opacity: 0; transform: skewX(0deg); }
+    }
+
+    /* Single Image Box */
+    .single-image-box {
+      position: relative;
+      max-width: 800px; width: 90vw; height: 55vh;
+      border-radius: 20px; overflow: hidden;
+      border: 2px solid rgba(138, 43, 226, 0.4);
+      box-shadow: 0 0 40px rgba(138, 43, 226, 0.25);
+      background: #000; display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+    .single-image-box img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  </style>
+</head>
+<body>
+
+  <!-- Glitch Transition Layer -->
+  <div class="glitch-overlay" id="glitch-overlay"></div>
+
+  <!-- Neural Canvas Background -->
+  <div class="canvas-background">
+    <canvas id="hero-canvas"></canvas>
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <!-- Top Header Navigation -->
+  <header class="mission-header-bar">
+    <a href="../index.html?team=alpha" class="mh-back">
+      <span>←</span> BACK TO TEAM ALPHA
+    </a>
+    <div class="mh-brand">THE SYNAPSE SOCIETY</div>
+    <div class="mh-badge">MISSION 01</div>
+  </header>
+
+  <!-- Presenter Control FAB -->
+  <button class="presenter-fab" id="presenter-fab" title="Presenter Control Panel (Press P)">
+    ⚙ PRESENT CONTROL
+  </button>
+
+  <!-- Presenter Control Panel -->
+  <div class="presenter-panel" id="presenter-panel">
+    <div class="presenter-panel-header">
+      <span class="pp-title">⚡ PRESENTER CONTROL PANEL</span>
+      <span class="pp-hint">Keyboard shortcut: P</span>
+    </div>
+    <div class="presenter-panel-body">
+      <div class="pp-group">
+        <label class="pp-label">Jump to Stage</label>
+        <div class="pp-row">
+          <select id="pp-stage-select" class="pp-select">
+            <option value="1">1: Opening Animation</option>
+            <option value="2">2: Intro Screen</option>
+            <option value="3">3: Mission Brief</option>
+            <option value="4">4: Image Prep</option>
+            <option value="5">5: Countdown</option>
+            <option value="6">6: Image Reveal</option>
+            <option value="7">7: Objective</option>
+            <option value="8">8: Rules</option>
+            <option value="9">9: Tips</option>
+            <option value="10">10: 5-Min Timer</option>
+            <option value="11">11: Closing</option>
+          </select>
+          <button id="pp-jump-btn" class="pp-btn">JUMP</button>
+        </div>
+      </div>
+      <div class="pp-group">
+        <label class="pp-label">Timer Controls</label>
+        <div class="pp-row">
+          <button id="pp-timer-start" class="pp-btn pp-btn-green">Start</button>
+          <button id="pp-timer-pause" class="pp-btn pp-btn-yellow">Pause</button>
+          <button id="pp-timer-reset" class="pp-btn pp-btn-red">Reset</button>
+        </div>
+      </div>
+      <div class="pp-group">
+        <label class="pp-label">Quick Actions</label>
+        <div class="pp-row">
+          <button id="pp-restart" class="pp-btn" style="width:100%;">Restart Mission</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAGES -->
+
+  <!-- STAGE 1: Opening Animation (Black Screen -> Logo Fade & Glow -> Text -> Slide Up) -->
+  <section class="stage active" id="stage-1">
+    <div class="opening-logo-container">
+      <img src="../assets/images/synapse_logo.jpg" alt="Synapse Logo" class="opening-logo-img">
+    </div>
+    <div style="font-family:'Space Grotesk',sans-serif;font-size:1.6rem;font-weight:700;letter-spacing:0.2em;color:#fff;margin-bottom:0.4rem;">
+      THE SYNAPSE SOCIETY
+    </div>
+    <div style="font-family:'Space Grotesk',sans-serif;font-size:2.2rem;font-weight:800;color:var(--neon-purple);letter-spacing:0.1em;margin-bottom:0.3rem;">
+      ज्ञानस्य सेतु
+    </div>
+    <div style="color:var(--text-sub);font-size:1.1rem;font-style:italic;letter-spacing:0.05em;">
+      The Bridge of Knowledge
+    </div>
+  </section>
+
+  <!-- STAGE 2: Intro Screen -->
+  <section class="stage" id="stage-2">
+    <div style="font-family:'Fira Code',monospace;font-size:0.85rem;color:var(--accent-cyan);letter-spacing:0.2em;margin-bottom:0.8rem;">TEAM ALPHA // MISSION PROTOCOL</div>
+    <h1 class="mission-title-xl" style="font-size:4rem;margin-bottom:0.4rem;">MISSION 01</h1>
+    <h2 style="font-family:'Space Grotesk',sans-serif;font-size:2rem;font-weight:700;color:var(--neon-purple);letter-spacing:0.08em;margin-bottom:1.5rem;">
+      Prompt Engineering Challenge
+    </h2>
+    <p style="font-size:1.25rem;color:var(--text-sub);max-width:680px;line-height:1.6;margin-bottom:2.5rem;font-style:italic;">
+      "Every masterpiece created by AI begins with a single prompt."
+    </p>
+    <button class="btn-mission-primary" id="s2-next" style="padding:16px 40px;font-size:1.1rem;box-shadow:0 0 35px rgba(138,43,226,0.6);">
+      BEGIN MISSION →
+    </button>
+  </section>
+
+  <!-- STAGE 3: Mission Brief -->
+  <section class="stage" id="stage-3">
+    <div class="glass-mission-card" style="max-width:760px;width:92%;padding:2.2rem;text-align:left;">
+      <!-- Terminal Header Bar -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:0.8rem;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="width:10px;height:10px;border-radius:50%;background:#F43F5E;"></div>
+          <div style="width:10px;height:10px;border-radius:50%;background:#F59E0B;"></div>
+          <div style="width:10px;height:10px;border-radius:50%;background:#10B981;"></div>
+          <span style="font-family:'Fira Code',monospace;font-size:0.78rem;color:var(--text-muted);margin-left:0.5rem;">SYNAPSE_CORE_AI v4.2</span>
+        </div>
+        <div style="font-family:'Fira Code',monospace;font-size:0.75rem;color:var(--accent-cyan);">STATUS: ACTIVE</div>
+      </div>
+
+      <!-- Boot Status Lines -->
+      <div id="boot-status-box" style="font-family:'Fira Code',monospace;font-size:0.9rem;color:var(--accent-cyan);margin-bottom:1rem;line-height:1.6;">
+        SYSTEM BOOTING...<br>
+        <span style="color:#10B981;">[✓] Artificial Intelligence Core Activated</span><br>
+        <span style="color:var(--neon-purple);">[!] MISSION RECEIVED</span>
+      </div>
+
+      <!-- Typewriter Output Box -->
+      <div class="typewriter-box" id="brief-text" style="min-height:180px;font-size:1.05rem;line-height:1.8;color:#fff;"></div>
+      <div id="brief-cursor" class="typewriter-cursor" style="display:none;"></div>
+    </div>
+    <button class="btn-mission-secondary" id="s3-next" style="margin-top:1.8rem;display:none;">CONTINUE →</button>
+  </section>
+
+  <!-- STAGE 4: Image Preparation -->
+  <section class="stage" id="stage-4">
+    <p class="mission-label">PHASE 01 // MEMORIZATION</p>
+    <h2 class="mission-title-lg">Prepare For Visual Memory</h2>
+    <p class="mission-subtitle" style="margin-bottom:2rem;">Two images will be displayed for exactly 10 SECONDS EACH. Focus on details, lighting, colors, and structure.</p>
+    <button class="btn-mission-primary" id="s4-next">READY — START COUNTDOWN</button>
+  </section>
+
+  <!-- STAGE 5: 3-2-1 Countdown -->
+  <section class="stage" id="stage-5">
+    <p class="mission-label" style="color:#F59E0B;">⚠ GET READY</p>
+    <h2 class="mission-title-lg" style="margin-bottom:2rem;">Images Revealing In...</h2>
+    <div style="display:flex;gap:2rem;align-items:center;justify-content:center;margin-bottom:2.5rem;">
+      <div id="countdown-3" style="font-family:'Space Grotesk',sans-serif;font-size:6rem;font-weight:800;color:var(--neon-purple);opacity:0;transition:all 0.4s ease;">3</div>
+      <div id="countdown-2" style="font-family:'Space Grotesk',sans-serif;font-size:6rem;font-weight:800;color:var(--neon-purple);opacity:0;transition:all 0.4s ease;">2</div>
+      <div id="countdown-1" style="font-family:'Space Grotesk',sans-serif;font-size:6rem;font-weight:800;color:var(--neon-purple);opacity:0;transition:all 0.4s ease;">1</div>
+    </div>
+    <button class="btn-mission-primary" id="s5-start">START COUNTDOWN</button>
+  </section>
+
+  <!-- STAGE 6: Image Reveal (10s Image 1 -> 10s Image 2) -->
+  <section class="stage" id="stage-6">
+    <p class="mission-label" id="reveal-image-label" style="color:#F43F5E;letter-spacing:0.2em;margin-bottom:1rem;">⏱ MEMORIZE IMAGE 1 / 2</p>
+
+    <!-- Single Full Image Display Box -->
+    <div class="single-image-box">
+      <img id="challenge-img" src="../assets/images/challenge_01_spiderman.jpg" alt="Challenge Image">
+    </div>
+
+    <!-- Timer Ring & Controls -->
+    <div style="display:flex;align-items:center;gap:1.5rem;justify-content:center;">
+      <div class="circular-timer-wrap" style="width:70px;height:70px;">
+        <svg viewBox="0 0 100 100">
+          <circle class="timer-track" cx="50" cy="50" r="42"/>
+          <circle id="reveal-timer-ring" class="timer-fill" cx="50" cy="50" r="42"
+            style="stroke-dasharray:263.9;stroke-dashoffset:0;"/>
+        </svg>
+        <div class="timer-center">
+          <div id="reveal-countdown" class="timer-digits" style="font-size:1.3rem;">10</div>
+        </div>
+      </div>
+
+      <button class="btn-mission-primary" id="switch-img-btn" style="padding:12px 24px;font-size:0.9rem;">
+        NEXT IMAGE (GROOT) →
+      </button>
+    </div>
+  </section>
+
+  <!-- STAGE 7: Mission Objective -->
+  <section class="stage" id="stage-7">
+    <p class="mission-label">PHASE 02 // PROMPT RECREATION</p>
+    <h2 class="mission-title-lg" style="margin-bottom:1rem;">Your Objective</h2>
+    <div class="glass-mission-card" style="max-width:650px;width:90%;padding:2rem;text-align:left;line-height:1.8;">
+      <p style="color:var(--text-sub);font-size:1rem;margin-bottom:1rem;">
+        Use your memory to write a detailed, highly descriptive prompt in Gemini that recreates the images as accurately as possible.
+      </p>
+      <p style="color:var(--text-sub);font-size:1rem;">
+        Include art style, subject details, background environment, camera angles, and lighting parameters.
+      </p>
+    </div>
+    <button class="btn-mission-secondary" id="s7-next" style="margin-top:2rem;">VIEW RULES →</button>
+  </section>
+
+  <!-- STAGE 8: Mission Rules -->
+  <section class="stage" id="stage-8">
+    <p class="mission-label">MISSION PROTOCOL</p>
+    <h2 class="mission-title-lg" style="margin-bottom:1.5rem;">Challenge Rules</h2>
+    <ul class="rules-list" id="rules-list" style="max-width:550px;margin:0 auto 2rem;">
+      <li class="rule-item"><span class="rule-icon">✓</span>Individual Challenge — Every student writes independently</li>
+      <li class="rule-item"><span class="rule-icon">✓</span>Memory Only — No peak back at reference images</li>
+      <li class="rule-item"><span class="rule-icon">✓</span>5 Minutes — Complete prompt writing before time expires</li>
+      <li class="rule-item"><span class="rule-icon">✓</span>One Prompt Submission — Make your prompt count</li>
+    </ul>
+    <button class="btn-mission-secondary" id="s8-next">PROMPT TIPS →</button>
+  </section>
+
+  <!-- STAGE 9: Prompt Engineering Formula & Tips -->
+  <section class="stage" id="stage-9">
+    <p class="mission-label">PROMPT ENGINEERING GUIDE</p>
+    <h2 class="mission-title-lg" style="margin-bottom:1.5rem;">Formula for Great Prompts</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;max-width:750px;margin-bottom:2rem;text-align:left;">
+      <div class="glass-mission-card" style="padding:1.2rem;">
+        <div style="font-family:'Fira Code',monospace;font-size:0.75rem;color:var(--neon-purple);margin-bottom:0.3rem;">01 // SUBJECT</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;color:#fff;font-size:0.95rem;margin-bottom:0.3rem;">What is in the image?</div>
+        <div style="font-size:0.8rem;color:var(--text-muted);">Character, objects, key focus.</div>
+      </div>
+      <div class="glass-mission-card" style="padding:1.2rem;">
+        <div style="font-family:'Fira Code',monospace;font-size:0.75rem;color:var(--accent-cyan);margin-bottom:0.3rem;">02 // ENVIRONMENT</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;color:#fff;font-size:0.95rem;margin-bottom:0.3rem;">Where is it set?</div>
+        <div style="font-size:0.8rem;color:var(--text-muted);">Background, weather, location.</div>
+      </div>
+      <div class="glass-mission-card" style="padding:1.2rem;">
+        <div style="font-family:'Fira Code',monospace;font-size:0.75rem;color:#F59E0B;margin-bottom:0.3rem;">03 // STYLE</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;color:#fff;font-size:0.95rem;margin-bottom:0.3rem;">What art style?</div>
+        <div style="font-size:0.8rem;color:var(--text-muted);">Photorealistic, 3D render, anime.</div>
+      </div>
+      <div class="glass-mission-card" style="padding:1.2rem;">
+        <div style="font-family:'Fira Code',monospace;font-size:0.75rem;color:#10B981;margin-bottom:0.3rem;">04 // LIGHTING</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;color:#fff;font-size:0.95rem;margin-bottom:0.3rem;">How is it lit?</div>
+        <div style="font-size:0.8rem;color:var(--text-muted);">Cinematic neon, golden hour, moody.</div>
+      </div>
+    </div>
+    <button class="btn-mission-primary" id="s9-next">START 5-MINUTE TIMER →</button>
+  </section>
+
+  <!-- STAGE 10: 5-Minute Main Timer -->
+  <section class="stage" id="stage-10">
+    <p class="mission-label" style="color:#F59E0B;">⏱ PROMPT WRITING IN PROGRESS</p>
+    <h2 class="mission-title-lg" style="margin-bottom:1rem;">Write Your Prompt Now</h2>
+
+    <div class="big-timer-wrap" style="margin:1rem auto;">
+      <svg viewBox="0 0 260 260">
+        <circle class="timer-track" cx="130" cy="130" r="114"/>
+        <circle id="big-timer-fill" class="big-timer-fill" cx="130" cy="130" r="114"
+          style="stroke-dasharray:716.3;stroke-dashoffset:0;"/>
+      </svg>
+      <div class="timer-center">
+        <div id="big-timer-digits" class="timer-digits" style="font-size:2.8rem;">05:00</div>
+        <div class="timer-label" style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">MINUTES REMAINING</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:1rem;justify-content:center;margin-top:1rem;">
+      <button class="btn-mission-primary" id="timer-start-btn">▶ START TIMER</button>
+      <button class="btn-mission-secondary" id="timer-pause-btn" style="display:none;">⏸ PAUSE</button>
+    </div>
+    <button class="btn-mission-secondary" id="s10-next" style="margin-top:1.5rem;">TIME'S UP — SUBMIT →</button>
+  </section>
+
+  <!-- STAGE 11: Closing Debrief -->
+  <section class="stage" id="stage-11">
+    <div style="text-align:center;max-width:600px;">
+      <div class="intro-logo-box float-element" style="margin:0 auto 2rem;width:90px;height:90px;">
+        <img src="../assets/images/synapse_logo.jpg" alt="Synapse Logo" class="intro-logo-img assembled" style="border-radius:18px;">
+      </div>
+      <p class="mission-label">MISSION DEBRIEF</p>
+      <h2 class="mission-title-xl" style="font-size:2.5rem;margin-bottom:0.4rem;">Congratulations, Agent.</h2>
+      <p style="color:var(--text-sub);font-size:1rem;line-height:1.8;margin-bottom:0.5rem;">You have successfully completed</p>
+      <p style="color:var(--neon-purple);font-weight:700;font-size:1.2rem;margin-bottom:1.5rem;">Mission 01 — Prompt Engineering Challenge</p>
+      <p style="color:var(--text-muted);font-size:0.9rem;line-height:1.6;margin-bottom:2rem;">Your Prompt Engineering journey has begun. The ability to speak to AI is the greatest skill of the modern engineer.</p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem;">
+        <span style="color:var(--neon-purple);font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:0.1em;">INNOVATE</span>
+        <span style="color:var(--text-muted);">•</span>
+        <span style="color:var(--accent-cyan);font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:0.1em;">CREATE</span>
+        <span style="color:var(--text-muted);">•</span>
+        <span style="color:#fff;font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:0.1em;">LEAD</span>
+      </div>
+      <a href="../index.html?team=alpha" class="btn-mission-primary" style="display:inline-block;text-decoration:none;">RETURN TO TEAM ALPHA →</a>
+    </div>
+  </section>
+
+  <!-- Audio and Mission JS -->
+  <script src="../assets/js/sounds.js"></script>
+  <script src="../assets/js/missions/alpha-m1.js"></script>
+</body>
+</html>
