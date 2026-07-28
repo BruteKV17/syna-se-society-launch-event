@@ -24,7 +24,7 @@ export const Section03bLeadership: React.FC = () => {
 
   const deptLeads = [
     { title: 'TECH HEAD', name: 'Ayush Kumar Singh', icon: Cpu, color: 'text-cyan-400', border: 'border-cyan-500/40', bg: 'bg-cyan-950/40', image: '/leadership/ayush-kumar-singh-tech-head.jpg' },
-    { title: 'PROJECT SUPERVISOR', name: 'Vansh Kumar Chandel', icon: Layers, color: 'text-purple-400', border: 'border-purple-500/40', bg: 'bg-purple-950/40' },
+    { title: 'PROJECT SUPERVISOR', name: 'Vansh Kumar Chandel', icon: Layers, color: 'text-purple-400', border: 'border-purple-500/40', bg: 'bg-purple-950/40', image: '/leadership/vansh-kumar-chandel.jpg' },
     { title: 'MEDIA HEAD', name: 'Vaishnavi Srivastava', icon: Video, color: 'text-magenta', border: 'border-pink-500/40', bg: 'bg-pink-950/40', image: '/leadership/vaishnavi-srivastava-media-head.png' },
     { title: 'DESIGN HEAD', name: 'Kishan Verma', icon: Palette, color: 'text-amber-400', border: 'border-amber-500/40', bg: 'bg-amber-950/40', image: '/leadership/kishan-verma-design-head.jpg' },
     { title: 'CONTENT HEAD', name: 'Vaishnavi Gupta', icon: FileText, color: 'text-emerald-400', border: 'border-emerald-500/40', bg: 'bg-emerald-950/40', image: '/leadership/vaishnavi-gupta-content-head.png' },
