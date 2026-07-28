@@ -43,7 +43,7 @@ export const Section10LaunchEvent: React.FC = () => {
           className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-950/60 border border-red-500/40 text-red-300 font-mono text-xs mb-4 shadow-neon-purple animate-pulse"
         >
           <Flame className="w-4 h-4 text-red-400" />
-          <span>OFFICIAL LAUNCH EVENT • AUGUST 5, 2026</span>
+          <span>TENTATIVE LAUNCH EVENT DAY • AUGUST 5, 2026</span>
         </motion.div>
 
         {/* Main Heading */}
@@ -64,7 +64,7 @@ export const Section10LaunchEvent: React.FC = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="font-sans text-gray-300 text-sm sm:text-base max-w-xl mx-auto mb-10 leading-relaxed"
         >
-          Prepare for the official Launch Event of The Synapse Society on August 5th — featuring live AI demonstrations, digital pass distribution, hackathon reveals, and student networking.
+          Prepare for the tentative Launch Event Day of The Synapse Society on August 5th — featuring live AI demonstrations, digital pass distribution, hackathon reveals, and student networking.
         </motion.p>
 
         {/* Live Real-Time Countdown Timer Grid */}
@@ -104,7 +104,7 @@ export const Section10LaunchEvent: React.FC = () => {
             <div>
               <div className="inline-flex items-center gap-1.5 font-mono text-xs text-cyan-300 font-bold mb-1">
                 <Calendar className="w-3.5 h-3.5 text-cyan-400" />
-                <span>OFFICIAL SYNAPSE LAUNCH EVENT</span>
+                <span>TENTATIVE SYNAPSE LAUNCH EVENT DAY</span>
               </div>
               <h3 className="font-display text-2xl font-bold text-white">Experience The Bridge of Knowledge</h3>
               <p className="font-sans text-xs sm:text-sm text-gray-300 mt-2">
