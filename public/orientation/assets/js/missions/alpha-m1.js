@@ -72,11 +72,11 @@ class AlphaMission1 {
       glitch.classList.remove('active');
       void glitch.offsetWidth;
       glitch.classList.add('active');
-      window.soundSystem && window.soundSystem.playGlitch();
+      try { window.soundSystem && window.soundSystem.playGlitch && window.soundSystem.playGlitch(); } catch(e) {}
       setTimeout(() => {
         glitch.classList.remove('active');
         if (callback) callback();
-      }, 400);
+      }, 300);
     } else if (callback) {
       callback();
     }
@@ -87,15 +87,21 @@ class AlphaMission1 {
     const next = document.getElementById(`stage-${n}`);
     if (!next) return;
 
-    if (prev) prev.classList.remove('active');
+    if (prev) {
+      prev.classList.remove('active');
+      prev.style.display = 'none';
+      prev.style.pointerEvents = 'none';
+    }
     this.currentStage = n;
+    next.style.display = 'flex';
+    next.style.pointerEvents = 'auto';
     next.classList.add('active');
 
     const sel = document.getElementById('pp-stage-select');
     if (sel) sel.value = n;
 
     this.onStageEnter(n);
-    window.soundSystem && window.soundSystem.playClick();
+    try { window.soundSystem && window.soundSystem.playClick && window.soundSystem.playClick(); } catch(e) {}
   }
 
   onStageEnter(n) {
@@ -331,11 +337,21 @@ class AlphaMission1 {
   }
 
   bindButtons() {
+    const s2 = document.getElementById('stage-2');
     const s2Next = document.getElementById('s2-next');
-    if (s2Next) {
-      s2Next.addEventListener('click', () => {
-        this.triggerGlitch(() => this.goToStage(3));
-      });
+
+    const handleS2 = (e) => {
+      if (e) e.stopPropagation();
+      if (this.currentStage === 2) {
+        this.goToStage(3);
+        this.triggerGlitch();
+      }
+    };
+
+    if (s2Next) s2Next.addEventListener('click', handleS2);
+    if (s2) {
+      s2.style.cursor = 'pointer';
+      s2.addEventListener('click', handleS2);
     }
 
     const b = (id, targetStage) => {
