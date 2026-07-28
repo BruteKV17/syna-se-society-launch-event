@@ -44,12 +44,24 @@ class AlphaMission1 {
   }
 
   startOpeningAnimation() {
+    const s1 = document.getElementById('stage-1');
+    if (s1) {
+      s1.style.cursor = 'pointer';
+      s1.addEventListener('click', () => {
+        if (this.currentStage === 1) {
+          s1.classList.add('fade-up');
+          this.goToStage(2);
+        }
+      });
+    }
+
     // Automatically fade up after 3.2 seconds
     setTimeout(() => {
-      const s1 = document.getElementById('stage-1');
       if (s1 && this.currentStage === 1) {
         s1.classList.add('fade-up');
-        setTimeout(() => this.goToStage(2), 1000);
+        setTimeout(() => {
+          if (this.currentStage === 1) this.goToStage(2);
+        }, 800);
       }
     }, 3200);
   }
@@ -100,11 +112,24 @@ class AlphaMission1 {
     const box = document.getElementById('brief-text');
     const cursor = document.getElementById('brief-cursor');
     const btn = document.getElementById('s3-next');
+    const s3 = document.getElementById('stage-3');
     if (!box) return;
 
     box.textContent = '';
     if (cursor) cursor.style.display = 'inline-block';
     if (btn) btn.style.display = 'none';
+
+    const finishTypewriter = () => {
+      clearInterval(this.typewriterInterval);
+      box.textContent = MONOLOGUE_TEXT;
+      if (cursor) cursor.style.display = 'none';
+      if (btn) btn.style.display = 'inline-block';
+    };
+
+    if (s3) {
+      s3.style.cursor = 'pointer';
+      s3.addEventListener('click', finishTypewriter, { once: true });
+    }
 
     let idx = 0;
     clearInterval(this.typewriterInterval);
@@ -114,9 +139,7 @@ class AlphaMission1 {
       if (idx % 4 === 0) window.soundSystem && window.soundSystem.playTypewriter();
 
       if (idx >= MONOLOGUE_TEXT.length) {
-        clearInterval(this.typewriterInterval);
-        if (cursor) cursor.style.display = 'none';
-        if (btn) btn.style.display = 'inline-block';
+        finishTypewriter();
       }
     }, 28);
   }

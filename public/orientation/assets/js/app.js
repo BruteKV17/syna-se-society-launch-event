@@ -397,9 +397,9 @@ class ProtocolScreenBuilder {
         </button>
       `;
 
-      const btn = card.querySelector('.btn-launch-mission');
-      if (btn && !btn.disabled) {
-        btn.addEventListener('click', () => {
+      if (mission.status !== 'locked') {
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', () => {
           window.soundSystem && window.soundSystem.playLaunch();
           if (mission.url) {
             window.location.href = mission.url;
