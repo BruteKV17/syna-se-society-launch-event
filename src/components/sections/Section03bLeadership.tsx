@@ -149,7 +149,7 @@ export const Section03bLeadership: React.FC = () => {
             <ShieldCheck className="w-4 h-4 text-indigo-400" /> TIER 2 — EXECUTIVE COUNCIL
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto items-stretch">
+          <div className="flex flex-col md:flex-row justify-center items-stretch gap-6 max-w-4xl mx-auto">
             {/* Vice President: Ankit Kumar Mishra */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -157,7 +157,7 @@ export const Section03bLeadership: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1 }}
               onMouseEnter={() => audioService.playHover()}
-              className="glass-card rounded-2xl p-5 border-2 border-indigo-500/40 shadow-xl flex flex-col justify-between text-left group hover:border-indigo-400 transition-all"
+              className="glass-card rounded-2xl p-5 border-2 border-indigo-500/40 shadow-xl flex flex-col justify-between text-left group hover:border-indigo-400 transition-all w-full md:w-[340px]"
             >
               <div>
                 <div className="flex items-center justify-between mb-3">
@@ -197,7 +197,7 @@ export const Section03bLeadership: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
               onMouseEnter={() => audioService.playHover()}
-              className="glass-card rounded-2xl p-5 border-2 border-emerald-500/40 shadow-xl flex flex-col justify-between text-left group hover:border-emerald-400 transition-all"
+              className="glass-card rounded-2xl p-5 border-2 border-emerald-500/40 shadow-xl flex flex-col justify-between text-left group hover:border-emerald-400 transition-all w-full md:w-[340px]"
             >
               <div>
                 <div className="flex items-center justify-between mb-3">
@@ -226,44 +226,6 @@ export const Section03bLeadership: React.FC = () => {
 
               <div className="pt-3 border-t border-purple-500/20 font-mono text-[10px] text-emerald-300 font-bold flex justify-between">
                 <span>TREASURY BOARD</span>
-                <span>TIER 2</span>
-              </div>
-            </motion.div>
-
-            {/* General Secretary: [Vacant / —] */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              onMouseEnter={() => audioService.playHover()}
-              className="glass-card rounded-2xl p-5 border-2 border-purple-500/30 shadow-xl flex flex-col justify-between text-left group hover:border-purple-400 transition-all opacity-85"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <span className="px-3 py-0.5 rounded-full bg-purple-950/80 border border-purple-500/40 text-purple-300 font-mono text-[10px] font-bold">
-                    GENERAL SECRETARY
-                  </span>
-                  <Users className="w-4 h-4 text-purple-400" />
-                </div>
-
-                <div className="relative w-full h-72 sm:h-80 rounded-xl overflow-hidden mb-4 border border-dashed border-purple-500/40 bg-purple-950/30 flex flex-col items-center justify-center text-center p-4">
-                  <UserCheck className="w-8 h-8 text-purple-400 mb-2 animate-pulse" />
-                  <div className="font-display text-base font-bold text-purple-200">
-                    [ SELECTION IN PROGRESS ]
-                  </div>
-                  <div className="font-mono text-[10px] text-purple-400/80 mt-1">
-                    APPLICATIONS OPEN FOR 2026
-                  </div>
-                </div>
-
-                <p className="font-sans text-xs text-gray-300 leading-relaxed mb-3">
-                  Responsible for executive documentation, meeting coordination, and internal communications.
-                </p>
-              </div>
-
-              <div className="pt-3 border-t border-purple-500/20 font-mono text-[10px] text-purple-400 font-bold flex justify-between">
-                <span>SECRETARIAT</span>
                 <span>TIER 2</span>
               </div>
             </motion.div>
