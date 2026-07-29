@@ -25,9 +25,9 @@ const VISION_CHALLENGES = [
     svg: `<svg width="180" height="200" viewBox="0 0 100 100" fill="none"><path d="M40 20C40 20 45 12 55 22C60 27 50 35 45 38" stroke="#E76F00" stroke-width="4" stroke-linecap="round"/><path d="M50 10C50 10 58 5 68 15C72 20 62 28 58 30" stroke="#5382A1" stroke-width="4" stroke-linecap="round"/><path d="M25 65C25 65 35 60 65 60C75 60 80 65 80 65" stroke="#E76F00" stroke-width="6" stroke-linecap="round"/><path d="M30 75C30 75 42 72 60 72C70 72 75 75 75 75" stroke="#5382A1" stroke-width="5" stroke-linecap="round"/><path d="M20 85C20 85 45 88 80 85" stroke="#E76F00" stroke-width="6" stroke-linecap="round"/></svg>`
   },
   {
-    name: 'PyTorch / Flame AI',
-    desc: "PyTorch is an open-source machine learning framework developed by Meta AI, widely used for deep learning and neural network training.",
-    svg: `<img src="../assets/images/pytorch_logo.png" alt="PyTorch Flame Logo" style="width: 180px; height: 180px; object-fit: contain; filter: drop-shadow(0 0 15px rgba(255,100,0,0.8));" />`
+    name: 'Firebase',
+    desc: "Firebase is Google's mobile and web platform offering real-time databases, authentication, and cloud infrastructure.",
+    svg: `<svg width="180" height="200" viewBox="0 0 100 100" fill="none"><path d="M25 80L50 15L75 80L50 65Z" fill="#FFCA28"/><path d="M50 15L75 80L50 65Z" fill="#FFA000"/></svg>`
   },
   {
     name: 'ChatGPT / OpenAI',
